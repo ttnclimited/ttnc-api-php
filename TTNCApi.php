@@ -62,7 +62,7 @@ class TTNCApi {
 										)
 								)
 						);		
-		$Response = file_get_contents('http://xml.ttnc.co.uk/api/', false, $Context);
+		$Response = file_get_contents('https://xml.ttnc.co.uk/api/', false, $Context);
 		//var_dump($Response);
 		$this->Response = new TTNCResponse($Response);
 	}
