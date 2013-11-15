@@ -20,7 +20,7 @@ class TTNCApi {
 		$this->SessionRequest();
 	}
 
-	public function _UseSession($SessionId) {
+	public function UseSession($SessionId) {
 		unset($this->Requests['SessionRequest']);
 		$SessionIdNode = $this->NoveroRequest->appendChild($this->Xml->createElement('SessionId'));
 		$SessionIdNode->nodeValue = $SessionId;
