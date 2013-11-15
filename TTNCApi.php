@@ -50,7 +50,7 @@ class TTNCApi {
 		foreach($this->Requests as $Request) {
 			$this->NoveroRequest->appendChild($this->Xml->importNode($Request->Get(), true));
 		}
-		var_dump($this->Xml->saveXML());
+		//var_dump($this->Xml->saveXML());
 		$Context = stream_context_create(
 							array(
 								'http' => array(
@@ -63,7 +63,7 @@ class TTNCApi {
 								)
 						);		
 		$Response = file_get_contents('https://xml.ttnc.co.uk/api/', false, $Context);
-		var_dump($Response);
+		//var_dump($Response);
 		$this->Response = new TTNCResponse($Response);
 	}
 
