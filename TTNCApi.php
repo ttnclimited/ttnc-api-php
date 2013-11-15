@@ -6,10 +6,10 @@ class TTNCApi {
 	private $Password = false;
 	private $VKey = false;
 
-	public function __construct($Username, $Password, $VKey = false) {
+	public function __construct($Username = false, $Password = false, $VKey = false) {
 		$this->Username = $Username;
 		$this->Password = $Password;
-		if($Vkey) $this->Vkey = $Vkey;
+		if($VKey) $this->VKey = $VKey;
 
 		$this->Xml = new DOMDocument();
 		$this->Xml->preserveWhiteSpace = true;
@@ -17,7 +17,7 @@ class TTNCApi {
 
 		$this->NoveroRequest = $this->Xml->appendChild($this->Xml->createElement('NoveroRequest'));
 
-		$this->SessionRequest();
+		if($Username && $Password) $this->SessionRequest();
 	}
 
 	public function UseSession($SessionId) {
@@ -34,9 +34,9 @@ class TTNCApi {
 	}
 
 	public function NewRequest($Target, $Name, $Id = false) {
-		if(!$Id) $Id = TTNCRequest::GenerateRequestId();
-		$this->Requests[$Id] = new TTNCRequest($Target, $Name, $Id);
-		return $this->Requests[$Id];
+		$Request = new TTNCRequest($this, $Target, $Name, $Id);
+		$this->Requests[$Request->GetId()] = $Request;
+		return $this->Requests[$Request->GetId()];
 	}
 
 	public function GetResponseFromId($Id) {
@@ -50,7 +50,7 @@ class TTNCApi {
 		foreach($this->Requests as $Request) {
 			$this->NoveroRequest->appendChild($this->Xml->importNode($Request->Get(), true));
 		}
-		//var_dump($this->Xml->saveXML());
+		var_dump($this->Xml->saveXML());
 		$Context = stream_context_create(
 							array(
 								'http' => array(
@@ -63,7 +63,7 @@ class TTNCApi {
 								)
 						);		
 		$Response = file_get_contents('https://xml.ttnc.co.uk/api/', false, $Context);
-		//var_dump($Response);
+		var_dump($Response);
 		$this->Response = new TTNCResponse($Response);
 	}
 
@@ -93,8 +93,12 @@ class TTNCApi {
 }
 
 class TTNCRequest {
-	public function __construct($Target, $Name, $Id) {
-		
+	public function __construct(TTNCApi &$API, $Target, $Name, $Id) {
+
+		$this->API = &$API;
+
+		$this->RequestId = ($Id) ? $Id : $this->GenerateRequestId();
+
 		$this->Xml = new DOMDocument();
 		$this->Xml->preserveWhiteSpace = true;
 		$this->Xml->formatOutput = true;
@@ -102,7 +106,7 @@ class TTNCRequest {
 		$this->Request = $this->Xml->appendChild($this->Xml->createElement('Request'));
 		$this->Request->setAttribute('target', $Target);
 		$this->Request->setAttribute('name', $Name);
-		$this->Request->setAttribute('id', $Id);
+		$this->Request->setAttribute('id', $this->RequestId);
 
 	}
 
@@ -117,6 +121,15 @@ class TTNCRequest {
 
 	public function Get() {
 		return $this->Request;
+	}
+
+	public function GetId() {
+		return $this->RequestId;
+	}
+
+	public function GetResponse() {
+		if(!isset($this->API->Response)) return false;
+		return $this->API->GetResponseFromId($this->RequestId);
 	}
 }
 
