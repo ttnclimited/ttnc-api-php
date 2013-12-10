@@ -21,7 +21,7 @@ The API can be constructed as follows;
 Requests can then be 'spooled' in the object until the *MakeRequests()* method is called. While not required, each request should be given an ID which can be used to retrieve the response later on;
 
 ```php
-	$Request = $API->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
+	$Request = $Api->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
 ```
 
 ### Basic Usage
@@ -29,7 +29,7 @@ Requests can then be 'spooled' in the object until the *MakeRequests()* method i
 <?php
 	require_once('TTNCApi.php');
 	$Api = new TTNCApi('<username>', '<password>', '<VKey>');
-	$Request = $API->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
+	$Request = $Api->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
 	$Api->MakeRequests();
 	$Response = $Api->GetResponseFromId('Request1Id');
 ?>
@@ -42,7 +42,7 @@ In order to send data in a request - the *SetData()* method can  be called on th
 <?php
 	require_once('TTNCApi.php');
 	$Api = new TTNCApi('<username>', '<password>', '<VKey>');
-	$Request = $API->NewRequest('NoveroNumbers', 'SetDestination', 'Request1Id');
+	$Request = $Api->NewRequest('NoveroNumbers', 'SetDestination', 'Request1Id');
 	$Request->SetData('Number', '02031511000');
 	$Request->SetData('Destination', '07512312312');
 	$Api->MakeRequests();
@@ -66,7 +66,7 @@ The client deals automatically with the *Auth* requests for you, however, in ord
 <?php
 	require_once('TTNCApi.php');
     $Api = new TTNCApi('<username>', '<password>', '<VKey>');
-    $Request = $API->NewRequest('Order', 'AddToBasket', 'Request1Id');
+    $Request = $Api->NewRequest('Order', 'AddToBasket', 'Request1Id');
     $Request->SetData('number', '02031231231');
     $Request->SetData('type', 'number');
     $Api->MakeRequests();
@@ -84,7 +84,7 @@ Then on repeat requests, to retrieve the same basket you can construct the objec
 	require_once('TTNCApi.php');
     $Api = new TTNCApi();
     $Api->UseSession($SessionId); // From the previous request, stored in your own code.
-    $Request = $API->NewRequest('Order', 'ViewBasket', 'Request1Id');
+    $Request = $Api->NewRequest('Order', 'ViewBasket', 'Request1Id');
     $Api->MakeRequests();
     $Response = $Api->GetResponseFromId('Request1Id');
     // Response now contains a representation of your basket.
