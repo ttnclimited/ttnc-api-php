@@ -1,8 +1,8 @@
 #TTNC's PHP API Client
 
-A simple PHP library that handles connection, authentication, requests and parsing of responses to and from TTNC's API. For more information on TTNC's API visit [TTNC's API Pages](http://www.ttnc.co.uk/myttnc/ttnc-api/) or [TTNC's Developer Centre](http://developer.ttnc.co.uk)
+A simple PHP library that handles connection, authentication, requests and parsing of responses to and from TTNC's API. For more information on TTNC's API visit [TTNC's main API page](http://www.ttnc.co.uk/other-services/ttnc-api)
 
-A list of function requests available via the API can be found [here](http://developer.ttnc.co.uk/functions/)
+A list of function requests available via the API can be found [here](http://www.ttnc.co.uk/help/api-functions)
 
 ## Requirements
 
@@ -33,7 +33,7 @@ Requests can then be 'spooled' in the object until the *MakeRequests()* method i
 	$Api->MakeRequests();
 	$Response = $Api->GetResponseFromId('Request1Id');
 ?>
-	
+
 ```
 
 In order to send data in a request - the *SetData()* method can  be called on the *Request* object;
@@ -71,7 +71,7 @@ The client deals automatically with the *Auth* requests for you, however, in ord
     $Request->SetData('type', 'number');
     $Api->MakeRequests();
     $Response = $Api->GetResponseFromId('SessionRequest');
-	
+
 	// Store $Response['SessionId'] in your own code.
 
 ?>
@@ -93,5 +93,4 @@ Then on repeat requests, to retrieve the same basket you can construct the objec
 
 ## Getting Support
 
-If you have any questions or support queries then first please read the [Developers Site](http://developer.ttnc.co.uk) and then email support@ttnc.co.uk.
-
+If you have any questions or support queries then first please read the [Developers Site](http://www.ttnc.co.uk/other-services/ttnc-api) and then email support@ttnc.co.uk.
