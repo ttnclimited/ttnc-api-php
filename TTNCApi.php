@@ -46,7 +46,7 @@ class TTNCApi {
 	}
 
 	public function MakeRequests() {
-		
+
 		foreach($this->Requests as $Request) {
 			$this->NoveroRequest->appendChild($this->Xml->importNode($Request->Get(), true));
 		}
@@ -61,7 +61,7 @@ class TTNCApi {
 										'ignore_errors' => true
 										)
 								)
-						);		
+						);
 		$Response = file_get_contents('https://xml.ttnc.co.uk/api/', false, $Context);
 		//var_dump($Response);
 		$this->Response = new TTNCResponse($Response);
@@ -71,7 +71,7 @@ class TTNCApi {
 		$Array = (is_array($Xml)) ? $Xml : json_decode(json_encode(new SimpleXMLElement($Xml, LIBXML_NOCDATA)), TRUE);
 		foreach(array_slice($Array, 0) as $Key=>$Value) {
 			if(empty($Value)) {
-				$Array[$Key] = NULL;            	
+				$Array[$Key] = NULL;
 			} elseif(is_array($Value) && $Key != '@attributes') {
 				$Array[$Key] = $this->_RequestToArray($Value);
 			}
@@ -116,7 +116,7 @@ class TTNCRequest {
 
 	public function SetData($Key, $Value) {
 		$this->Data = $this->Request->appendChild($this->Xml->CreateElement($Key));
-		$this->Data->nodeValue = $Value;
+		$this->Data->nodeValue = htmlspecialchars($Value);
 	}
 
 	public function Get() {
@@ -144,7 +144,7 @@ class TTNCResponse {
 			$this->Xml = $Response;
 		}
 	}
-	
+
 	public function Get() {
 		return $this->Xml;
 	}
