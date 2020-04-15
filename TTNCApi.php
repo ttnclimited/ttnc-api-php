@@ -46,7 +46,6 @@ class TTNCApi {
 	}
 
 	public function MakeRequests() {
-
 		foreach($this->Requests as $Request) {
 			$this->NoveroRequest->appendChild($this->Xml->importNode($Request->Get(), true));
 		}
