@@ -1,4 +1,4 @@
-#TTNC's PHP API Client
+# TTNC's PHP API Client
 
 A simple PHP library that handles connection, authentication, requests and parsing of responses to and from TTNC's API. For more information on TTNC's API visit [TTNC's main API page](https://help.ttnc.co.uk/docs/api)
 
@@ -15,23 +15,27 @@ A list of function requests available via the API can be found in the [documenta
 
 The API can be constructed as follows;
 ```php
-	$Api = new TTNCApi('<username>', '<password>', '<VKey>');
+...
+$Api = new TTNCApi('<username>', '<password>', '<VKey>');
+...
 ```
 
 Requests can then be 'spooled' in the object until the *MakeRequests()* method is called. While not required, each request should be given an ID which can be used to retrieve the response later on;
 
 ```php
-	$Request = $Api->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
+...
+$Request = $Api->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
+...
 ```
 
 ### Basic Usage
 ```php
 <?php
-	require_once('TTNCApi.php');
-	$Api = new TTNCApi('<username>', '<password>', '<VKey>');
-	$Request = $Api->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
-	$Api->MakeRequests();
-	$Response = $Api->GetResponseFromId('Request1Id');
+require_once('TTNCApi.php');
+$Api = new TTNCApi('<username>', '<password>', '<VKey>');
+$Request = $Api->NewRequest('NoveroNumbers', 'ListNumbers', 'Request1Id');
+$Api->MakeRequests();
+$Response = $Api->GetResponseFromId('Request1Id');
 ?>
 
 ```
@@ -40,13 +44,13 @@ In order to send data in a request - the *SetData()* method can  be called on th
 
 ```php
 <?php
-	require_once('TTNCApi.php');
-	$Api = new TTNCApi('<username>', '<password>', '<VKey>');
-	$Request = $Api->NewRequest('NoveroNumbers', 'SetDestination', 'Request1Id');
-	$Request->SetData('Number', '02031511000');
-	$Request->SetData('Destination', '07512312312');
-	$Api->MakeRequests();
-	$Response = $Api->GetResponseFromId('Request1Id');
+require_once('TTNCApi.php');
+$Api = new TTNCApi('<username>', '<password>', '<VKey>');
+$Request = $Api->NewRequest('NoveroNumbers', 'SetDestination', 'Request1Id');
+$Request->SetData('Number', '02031511000');
+$Request->SetData('Destination', '07512312312');
+$Api->MakeRequests();
+$Response = $Api->GetResponseFromId('Request1Id');
 ?>
 ```
 
@@ -54,8 +58,10 @@ In order to send data in a request - the *SetData()* method can  be called on th
 
 As long as each *Request* has been given an ID, after *MakeRequests()* is called, it can then be retrieved from the API object using the same ID.
 ```php
-	$Response = $Api->GetResponseFromId('Request1Id');
-	print_r($Response);
+...
+$Response = $Api->GetResponseFromId('Request1Id');
+print_r($Response);
+...
 ```
 
 ### Advanced Usage
@@ -64,30 +70,28 @@ The client deals automatically with the *Auth* requests for you, however, in ord
 
 ```php
 <?php
-	require_once('TTNCApi.php');
-    $Api = new TTNCApi('<username>', '<password>', '<VKey>');
-    $Request = $Api->NewRequest('Order', 'AddToBasket', 'Request1Id');
-    $Request->SetData('number', '02031231231');
-    $Request->SetData('type', 'number');
-    $Api->MakeRequests();
-    $Response = $Api->GetResponseFromId('SessionRequest');
-
-	// Store $Response['SessionId'] in your own code.
-
+require_once('TTNCApi.php');
+$Api = new TTNCApi('<username>', '<password>', '<VKey>');
+$Request = $Api->NewRequest('Order', 'AddToBasket', 'Request1Id');
+$Request->SetData('number', '02031231231');
+$Request->SetData('type', 'number');
+$Api->MakeRequests();
+$Response = $Api->GetResponseFromId('SessionRequest');
+// Store $Response['SessionId'] in your own code.
 ?>
 ```
 
 Then on repeat requests, to retrieve the same basket you can construct the object without authentication and then parse in the SessionId to use on Requests;
 
 ```php
-<?
-	require_once('TTNCApi.php');
-    $Api = new TTNCApi();
-    $Api->UseSession($SessionId); // From the previous request, stored in your own code.
-    $Request = $Api->NewRequest('Order', 'ViewBasket', 'Request1Id');
-    $Api->MakeRequests();
-    $Response = $Api->GetResponseFromId('Request1Id');
-    // Response now contains a representation of your basket.
+<?php
+require_once('TTNCApi.php');
+$Api = new TTNCApi();
+$Api->UseSession($SessionId); // From the previous request, stored in your own code.
+$Request = $Api->NewRequest('Order', 'ViewBasket', 'Request1Id');
+$Api->MakeRequests();
+$Response = $Api->GetResponseFromId('Request1Id');
+// Response now contains a representation of your basket.
 ?>
 ```
 
